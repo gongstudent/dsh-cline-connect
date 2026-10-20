@@ -81,8 +81,9 @@ export CLINE_API_KEY=sk_xxx
 免费模型列表**会轮换**（官方说明：offered on a rotating, limited-time basis）。
 插件每次激活以及手动刷新时都会重新拉取 `recommended-models`，所以不需要等插件更新就能用上新出现的免费模型。
 
-**能力元数据（上下文窗口 / 是否支持图片 / 是否推理）上游拿不到**：`recommended-models` 只有 `id/name/description/tags`，models.dev 也没有 `cline-free` 这个 provider。
-因此插件内置了一张手工维护的能力表（`lib/catalog.js` 的 `FREE_MODEL_CATALOG`），并在配置里支持逐模型覆盖；表里没有的新模型会走**保守兜底**（当作纯文本），并在面板上标记出来。
+`recommended-models` 只给 `id/name/description/tags`，但网关自己的目录 **`GET /ai/cline/models`（无需鉴权，470 项）公开上下文窗口**：`context_length`、`top_provider.max_completion_tokens`、`architecture.input_modalities` 都在里面。插件每次扫描都会拉这份目录，按「本地名」与上游 id 对上（`cline-pass/deepseek-v4.1-flash-1017` ↔ `deepseek/deepseek-v4.1-flash-1017`），所以**新模型上线当天就有真实窗口**，不用等插件发版。
+
+取数顺序：配置里的逐模型覆盖 → 内置能力表（`lib/catalog.js`）→ 扫描实测值 → 日期快照继承（`-1017` 这类后缀继承 `deepseek-v4.1-flash` 的窗口，但不继承名字）→ 路由兜底 `defaultContextWindow`（默认 100 万，可配）。窗口和模态都问不到的模型，窗口按 `defaultContextWindow`、模态按**保守兜底**（当作纯文本）处理，并在面板上标记出来。
 
 已知的实测差异：`cline-free/solar-mini4` **不支持图片输入**，其余三个支持。给它发图片时上游会返回 500（不是 4xx），插件会提前按模态拦下并给出可读错误。
 
