@@ -1,0 +1,13 @@
+# The working tree is LF-only; keep it that way for every clone, whatever
+# the consumer's core.autocrlf is set to.
+* text=auto eol=lf
+
+# Real binaries (none today, listed so a future asset is not mangled).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.zip binary

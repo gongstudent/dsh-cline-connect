@@ -1,0 +1,22 @@
+# --- Dependencies ---------------------------------------------------------
+node_modules/
+
+# --- Not published --------------------------------------------------------
+# Local load/runtime verification harness. Never commit: it mirrors a profile
+# through a junction and therefore contains absolute machine paths.
+.verify/
+
+# Design notes, audits and upstream research.
+docs/
+
+# Offline test suite, maintained outside the published repository.
+test/
+
+# --- Editor / OS ----------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.log
+npm-debug.log*

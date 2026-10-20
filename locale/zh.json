@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Cline Connect",
+    "description": "把 Cline 网关的免费模型与订阅模型接入 Harness，并自动附带网关要求的产品面请求头。"
+  }
+}
