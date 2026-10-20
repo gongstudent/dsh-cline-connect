@@ -83,7 +83,25 @@ export CLINE_API_KEY=sk_xxx
 
 `recommended-models` 只给 `id/name/description/tags`，但网关自己的目录 **`GET /ai/cline/models`（无需鉴权，470 项）公开上下文窗口**：`context_length`、`top_provider.max_completion_tokens`、`architecture.input_modalities` 都在里面。插件每次扫描都会拉这份目录，按「本地名」与上游 id 对上（`cline-pass/deepseek-v4.1-flash-1017` ↔ `deepseek/deepseek-v4.1-flash-1017`），所以**新模型上线当天就有真实窗口**，不用等插件发版。
 
-取数顺序：配置里的逐模型覆盖 → 内置能力表（`lib/catalog.js`）→ 扫描实测值 → 日期快照继承（`-1017` 这类后缀继承 `deepseek-v4.1-flash` 的窗口，但不继承名字）→ 路由兜底 `defaultContextWindow`（默认 100 万，可配）。窗口和模态都问不到的模型，窗口按 `defaultContextWindow`、模态按**保守兜底**（当作纯文本）处理，并在面板上标记出来。
+### 新模型会自动同步哪些参数
+
+| 参数 | 来源（优先级从高到低） | 新模型上线时 |
+| - | - | - |
+| 上下文窗口 `contextWindow` | 配置覆盖 → **扫描 `context_length`** → 内置表 → 快照族继承 → `defaultContextWindow`（默认 100 万） | 自动 |
+| 输出上限 | 配置覆盖 → **扫描 `top_provider.max_completion_tokens`** → 内置表 | 自动 |
+| 可上传的模态 | 配置覆盖 → **扫描 `architecture.input_modalities`** → 内置表 | 自动 |
+| 是否支持推理 | 配置覆盖 → 内置表（**实测值**）→ 扫描 `supported_parameters` 里的 `reasoning` / `reasoning_effort` / `include_reasoning` → 路由默认 | 自动 |
+| 展示名 | 配置覆盖 → 内置表（**精修标签**）→ 扫描 `name` → 模型 id | 自动 |
+
+两处刻意的例外：**扫描实测值压过内置表**（窗口/输出/模态）—— 网关会为每个新模型重新发布这些数字，内置表只是发版那天的快照，这样上游改了窗口或图片支持，插件不用发版就能跟上；**推理能力和标签留在内置表**—— 标签是精修过的（扫描给的是 `DeepSeek: DeepSeek V4.1 Flash 1017` 这种上游全名），推理能力是本插件在真网关实测过的，而扫描的 `supported_parameters` 说的是「这个端点接受哪些参数」，不是「这个模型会不会推理」。
+
+### 关于「上传的文件类型」
+
+这一版 dsh 的模态词汇表只有 **`text` 和 `image`**（`@deepseek-ai/dsh-llm` 的 `ModelModalityMap`），附件系统也只接受 `image/png`、`image/jpeg`、`image/webp`、`image/gif` —— 所以「文件类型」目前等于「图片」，PDF / 音频 / 视频在 seam 这一层就表达不出来。插件按 `lib/catalog.js` 的 `SEAM_MODALITIES` 常量裁剪扫描到的模态（上游常报 `video` / `audio` / `file`）。等 dsh 扩展这个词汇表，改那一行常量即可，扫描拿到的数据已经在手上。
+
+### 兜底
+
+窗口和模态都问不到的模型（冷启动 + 无网络 + 模型比插件新），窗口按 `defaultContextWindow`、模态按**保守兜底**（当作纯文本）处理，并在面板上标记出来。
 
 已知的实测差异：`cline-free/solar-mini4` **不支持图片输入**，其余三个支持。给它发图片时上游会返回 500（不是 4xx），插件会提前按模态拦下并给出可读错误。
 
