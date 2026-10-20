@@ -40,7 +40,7 @@ HTTP/1.1 403 Forbidden
 ## 安装
 
 ```bash
-dsh plugin --profile desktop add github:gongstudent/dsh-cline-connect
+dsh plugin --profile desktop add -w github:gongstudent/dsh-cline-connect
 ```
 
 安装后重启 dsh。
