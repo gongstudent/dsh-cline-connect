@@ -1,9 +1,7 @@
 MIT License
 
 Copyright (c) 2026 dsh-cline-connect contributors
-
-This project is derived from dsh-cline-pass (https://github.com/yhshzh/dsh-cline-pass),
-which is distributed under the MIT License. Portions of lib/ originate from that project.
+Copyright (c) 2026 dsh-cline-pass contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

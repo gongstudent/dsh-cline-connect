@@ -1,6 +1,6 @@
 # dsh-cline-connect
 
-把 [Cline](https://cline.bot) 网关的**免费模型**（`cline-free/*`）和 **ClinePass 订阅模型**（`cline-pass/*`）接入 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)。
+把 Cline 网关的**免费模型**（`cline-free/*`）和 **ClinePass 订阅模型**（`cline-pass/*`）接入 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)。
 安装为 dsh 插件后，模型会直接出现在模型列表中，用户只需填一个 Key，无需运行任何代理服务。
 
 ## 这个插件解决什么问题
@@ -49,7 +49,7 @@ dsh plugin --profile desktop add -w github:gongstudent/dsh-cline-connect
 
 ### API Key
 
-Key 在 [app.cline.bot](https://app.cline.bot) → **Settings → API Keys** 创建。
+Key 在 app.cline.bot → **Settings → API Keys** 创建。
 可以填在 **设置 → Cline Connect** 面板里（存入 dsh 凭据库，界面只显示掩码），也可以启动前设环境变量：
 
 ```bash
@@ -145,3 +145,6 @@ export CLINE_API_KEY=sk_xxx
 ## License
 
 [MIT](LICENSE)
+
+本项目派生自 MIT 许可的 [dsh-cline-pass](https://github.com/yhshzh/dsh-cline-pass)，
+`lib/` 中有部分代码源自该项目，其版权归 dsh-cline-pass contributors 所有。
