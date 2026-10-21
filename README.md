@@ -148,6 +148,25 @@ export CLINE_API_KEY=sk_xxx
 - 切换后需要**重新选一次会话模型** —— dsh 的模型选择是按 provider+model 记录的。
 - 本插件**不提供**多账号池、渠道探测/校验/钉住（`probe`/`validate`/`pin`），这是有意的取舍。
 
+## 版本与更新
+
+插件以 `github:` 安装时，pnpm 会把依赖钉到**一个 commit**（写在 profile 的 `pnpm-lock.yaml` 里）。这意味着：
+
+- **装/更新任何别的插件，都可能按锁文件把本插件装回旧 commit** —— 看起来像「功能突然没了」，其实是版本回退了；
+- 想升级本插件，必须显式重新解析：`pnpm update dsh-cline-connect`。
+
+为了不用靠猜，面板里有一块**「版本与更新」**（设置 → 插件 → Cline Connect 页签底部，默认折叠）：
+
+| 显示 | 含义 |
+| - | - |
+| 已安装 | 当前正在跑的这份代码的版本（读插件自己的 `package.json`） |
+| 锁文件 commit | 本 profile 的 lockfile 钉住的 commit（`link:` 安装时为空） |
+| 上游最新 | 上游 `main` 的 commit 与版本（`commits/main` + 该 commit 的 `package.json`） |
+| 状态 | 已是最新 / 有更新 / 检查失败（带原因，不假装正常） |
+| 命令 | 可复制的升级命令；优先用 dsh 自带的那份 pnpm（系统 pnpm 可能因 store 版本不同直接拒绝） |
+
+「检查更新」按钮强制重读；平时打开面板读一次就缓存 10 分钟，失败缓存 1 分钟。检查只读 GitHub，**不装包、不重启** —— 升级仍要你执行那条命令再重启 dsh。
+
 ## 开发
 
 本仓库只包含插件本体（`lib/`、`locale/`、bundle patch 与包元数据），**不含测试与设计文档**。
