@@ -167,3 +167,5 @@ export CLINE_API_KEY=sk_xxx
 
 本项目派生自 MIT 许可的 [dsh-cline-pass](https://github.com/yhshzh/dsh-cline-pass)，
 `lib/` 中有部分代码源自该项目，其版权归 dsh-cline-pass contributors 所有。
+
+[![](https://img.shields.io/badge/powered_by-dsh-4D6BFE?style=flat-square&logo=deepseek&logoColor=white)](https://github.com/deepseek-ai/deepseek-harness)
