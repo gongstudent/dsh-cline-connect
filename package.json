@@ -1,6 +1,6 @@
 {
   "name": "dsh-cline-connect",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Self-contained Cline provider for dsh: registers the Cline gateway's free (cline-free/*) and ClinePass (cline-pass/*) models on the harness LLM seam, sending the x-client-type product-surface header that the gateway requires for free models. Single API key, no proxy process.",
   "type": "module",
   "main": "lib/index.js",
